@@ -1,0 +1,83 @@
+﻿
+@using GUDC.Models
+@model IEnumerable<TeamEntry>
+@{bool lineflag = true;
+      }  
+@foreach (TeamEntry p in Model)
+{
+    if (lineflag)
+        {   
+            <tr class ="odd">
+
+                <td style="display:none;">
+                    @p.TEAMCODE
+                </td>
+                <td>
+                    @p.USENAME
+                </td>
+                <td>
+                    @p.NAME
+                </td>
+                @if ( @p.ROLE != "Administrator")
+                {
+                    <td>
+                        @p.ROLE
+                    </td>
+                }
+                else
+                {<td></td>}
+                <td>
+                    @p.PHONE
+                </td>
+                <td>
+                    @p.EMAIL
+                </td>
+                <td>
+                    <div>
+                        <div class="button">@Html.ActionLink("Edit", "Edit", new { id=@p.id})</div>
+
+                        <div class="redbutton">@Html.ActionLink("Delete", "Delete", new { id=@p.id})</div>
+                    </div>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr class ="even">
+                <td style="display:none;">
+                    @p.TEAMCODE
+                </td>
+                <td>
+                    @p.USENAME
+                </td>
+                <td>
+                    @p.NAME
+                </td>
+                @if ( @p.ROLE != "Administrator")
+                {
+                    <td>
+                        @p.ROLE
+                    </td>
+                }
+                else
+                {<td></td>}
+                <td>
+                    @p.PHONE
+                </td>
+                <td>
+                    @p.EMAIL
+                </td>
+                <td>
+                    <div>
+                        <div class="button">@Html.ActionLink("Edit", "Edit", new { id=@p.id})</div>
+
+                        <div class="redbutton">@Html.ActionLink("Delete", "Delete", new { id=@p.id})</div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+        lineflag = !lineflag;
+}
+
+

@@ -1,0 +1,82 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/Android.css")
+        @*@Scripts.Render("~/bundles/modernizr")*@
+        @Scripts.Render("~/bundles/jquery")
+     <script src="@Url.Content("http://maps.googleapis.com/maps/api/js?v=3.10&sensor=false&libraries=geometry&language=en")" type="text/javascript"></script>
+        @Scripts.Render("~/Scripts/mainjs.js")
+@*        @RenderSection("scripts", required: false)*@
+
+</head>
+<body onresize="heightMap()">
+@*    <header >
+        <div style="width:100%; height:64px">
+            <img style="float:left; margin-left:-5px; margin-right: auto; margin-top:10px;" src="~/Images/mark.png" />
+        </div>
+    </header>*@
+
+        <div id ="googleMap" style="background-color:white; width:100%;"></div>
+        <div id="AcceptDiv" style="display:none; background-color:#7e7e7e; position:absolute; top:10px; left:0; border:solid 4px; border-color:black; margin:auto; height:125px; width:220px;">
+            <h2 style="text-align: center;"> Do you accept the new task?</h2>
+            <div >
+                @*<button id="btnAccept" onclick="TaskAccept()">Accept</button>*@
+                <div class="button"><a onclick="TaskAccept()">Accept</a></div>
+                <div class="redbutton"><a onclick="TaskReject()">Reject</a></div>
+            </div>
+        </div>
+        <div id="StatusDiv" style="display:none; background-color:#7e7e7e; position:absolute; top:10px; left:0; border:solid 4px; border-color:black; margin:auto; height:125px; width:220px;">
+            <h2 style="text-align: center;"> Please do you select task status.</h2>
+            <div >
+                <div class="button"><a onclick="TaskPending()">Pending</a></div>
+                <div class="redbutton"><a onclick="TaskClosed()">Closed</a></div>
+            </div>
+        </div>
+    @{
+        List<GUDC.Models.TaskEntry> tasks = ViewBag.taskList;
+    }
+   @* <table id="taskTbl" style="display:none;">
+        @foreach (GUDC.Models.TaskEntry p in tasks)
+        {
+            <tr>
+                <td>@p.TASK</td>
+                <td>@p.STATUS</td>
+                <td>@p.START</td>
+                <td>@p.END</td>
+                <td>@p.LOCATION</td>
+                <td>@p.COORDINATE</td>
+                <td>@p.DETAILS</td>                
+                <td>@p.CLIENTNAME</td>
+                <td>@p.DIGLEN</td>
+            </tr>
+        }
+    </table>*@
+
+    <input id="MobileTaskLocation" value="" style="display:none;" />
+    <input id="MobileTeamLocation" value="@ViewBag.TeamLoction" style="display:none;" />
+    <input id="MobileTeamName" value="@ViewBag.TeamName" style="display:none;" />
+
+</body>
+    <footer style="display:none;">
+         
+        <ul id="menu">  
+            <li id="TaskStatus" style="width:20%" onclick="TaskStatusClick()">Task status</li>
+            <li id="ArrivedTask" style="width:28%" onclick="ArrivedTaskClick()">Arrived to task</li>
+            <li id="BestRoute" style="width:32%" onclick="BestRouteClick()">Best route to task</li>
+            <li id="AcceptTask" style="width:20%" onclick="TaskAccept()">Accept task</li>
+        </ul>        
+    </footer>
+</html>
+<script>
+    heightMap();
+    function heightMap() {
+        document.getElementById("googleMap").style.height = (document.documentElement.clientHeight) + 'px';
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>

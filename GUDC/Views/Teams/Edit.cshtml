@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "ADD/EDIT USER";
+}
+
+<h2>Edit Team</h2>
+<form method="post" action="">
+    <fieldset>
+        TeamCode:<br />
+        <input type="text" name="TEAMCODE" value=@ViewBag.TeamEntry.TEAMCODE />
+        <br /><br />
+        Name:<br />
+        <input type="text" name="NAME" value=@ViewBag.TeamEntry.NAME />
+        <br /><br />
+        USE Name:<br />
+        <input type="text" name="USENAME" value=@ViewBag.TeamEntry.USENAME />
+        <br /><br />
+        ROLE:<br />
+        <input type="text" name="ROAL" value=@ViewBag.TeamEntry.ROAL />
+        <br /><br />
+        PHONE:<br />
+        <input type="text" name="PHONE" value=@ViewBag.TeamEntry.PHONE />
+        <br /><br />
+        EMAIL:<br />
+        <input type="text" name="EMAIL" value=@ViewBag.TeamEntry.EMAIL />
+        <br /><br />
+        <input type="submit" value="Submit" />
+    </fieldset>
+</form>

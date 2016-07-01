@@ -1,0 +1,106 @@
+﻿@model GUDC.Models.TeamMemberEntry
+@{
+    ViewBag.Title = "AddEditTeamMembers";
+    AjaxOptions options = new AjaxOptions
+    {
+        UpdateTargetId = "searchResultTeamMember",
+        InsertionMode = InsertionMode.Replace,
+
+    };
+
+}
+<script type="text/javascript" 
+src="@Url.Content(
+"~/Scripts/jquery.unobtrusive-ajax.min.js")"> 
+</script>
+
+<h2>ADD NEW MEMBER</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <table>
+        <tr>
+            <td class="mem">TEAM NAME</td>
+            <td class="mem">TEAM MEMBER TEL. NO.</td>     
+        </tr>
+        <tr>
+            <td class="mem" style ="width:100%;">
+                @{
+                    SelectList TeamCodes = (SelectList)ViewBag.TeamCodes;
+                    }
+                @Html.DropDownListFor(m => m.TEAMCODE, TeamCodes)
+            </td>
+            <td class="mem">
+                @Html.TextBoxFor(m => m.TEAMMEMBERNO)
+                @Html.ValidationMessageFor(m => m.TEAMMEMBERNO)
+            </td>     
+        </tr>
+
+        <tr>
+            <td class="mem">ROLE</td>
+            <td class="mem">DESCRIPTION</td>     
+        </tr>
+        <tr>
+@*            <td class="mem">
+                @Html.TextBoxFor(m => m.TEAMMEMBERCODE)
+                @Html.ValidationMessageFor(m => m.TEAMMEMBERCODE)
+            </td>*@
+            <td class="mem">
+                @{
+                    SelectList TeamMemberRole = (SelectList)ViewBag.TeamMemberRole;
+                    }
+                @Html.DropDownListFor(m => m.TEAMMEMBERROLE, TeamMemberRole, new { id="memberRole"})
+            </td>
+
+            <td class="mem" rowspan="3">
+                <input style="height:110px; width:100%;" type="text" name="DESCRIPTION" />
+            </td>     
+        </tr>
+        <tr>
+            <td class="mem">TEAM MEMBER NAME</td>
+            <td class="mem"></td>
+        </tr>
+        <tr>
+            <td class="mem">
+               @Html.TextBoxFor(m => m.TEAMMEMBERNAME)
+               @Html.ValidationMessageFor(m => m.TEAMMEMBERNAME) 
+            </td>     
+        </tr>
+</table>
+<input style="width:200px; float:right; margin-right: 0px;" type="submit" value="Add Team Members" />
+}
+<br />
+<br />
+<br />
+<div style="border:1px solid; border-color:rgb(90,97,107);"></div>
+<div>
+    <h2 style="float:left; margin-bottom:-10px;">EDIT TERAM MEMBER</h2>
+    @using (Ajax.BeginForm("SearchTeamMember", options))
+    {               
+        <div style="float:right; margin-top:20px;">                                     
+            <button type="submit" style="float:right; margin-right:0px; width:42px; height: 42px; margin-top:5px;background-attachment:local; border:none; background-image:url('../Images/search.png');"></button>
+            <input style="float:right; width:300px; height:40px; " type="text" name="keyword" />                   
+        </div>
+    }                  
+</div>
+<table>
+    <tr>
+        <th>TEAM NAME</th>
+        <th>TEAM MEMBER CODE</th>
+        <th>TEAM MEMBER NAME</th>
+        <th>TEAM MEMBER NO</th>
+        <th>DESCRIPTION</th>
+        <th>ROLE</th>
+        <th>EDIT/DELETE</th>
+    </tr>
+    <tbody id="searchResultTeamMember">
+        @Html.Action("SearchTeamMember", new { keyword = "" })
+    </tbody>
+
+</table>
+
+<br />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

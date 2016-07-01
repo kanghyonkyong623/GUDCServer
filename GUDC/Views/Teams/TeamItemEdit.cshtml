@@ -1,0 +1,90 @@
+﻿@model GUDC.Models.TeamItem
+@{
+    ViewBag.Title = "TEAMS";
+}
+
+<h2>Team Edit</h2>
+@Styles.Render("~/Content/ui.dropdownchecklist.css")
+@*<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"> 
+</script>*@
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery_1.2.6.js")"> 
+</script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/ui.core.js")"> 
+</script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/ui.dropdownchecklist.js")"> 
+</script>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    
+    <fieldset>
+        <legend>TeamEdit Form</legend>
+        <ol>
+            <li style="display:none;">
+@*                @Html.LabelFor(m => m.TEAMCODE)*@
+                @Html.TextBoxFor(m => m.TEAMSTATUS)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.TEAMNAME)
+                @Html.TextBoxFor(m => m.TEAMNAME, new { style = "width:400px;" })
+            </li>
+            <li class="mem" style="display:none;">
+                @Html.TextBoxFor(m => m.DISTRICT, new {id = "district" })
+            </li>
+            <li>
+                @Html.LabelFor(m => m.DISTRICT)
+                @{
+                    
+                    SelectList DistrictCategory = (SelectList)ViewBag.DistrictCategory;
+                    string[] SelectedDistricts = (string[]) ViewBag.SelectedDistricts;
+                    if (SelectedDistricts != null)
+                    {
+                        <select id ="listbox" multiple="multiple">
+                            @{
+                                for (int i = 0; i < DistrictCategory.Count(); i++)
+                                {
+                                    var str = DistrictCategory.ElementAt(i).Text;
+                                    bool flag = false;
+                                    foreach (var item in SelectedDistricts)
+                                    {
+                               
+                                        if (str == item)
+                                        {
+                                            <option selected="selected">@str</option>
+                                            flag = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!flag) 
+                                    {
+                                        <option>@str</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    }
+                    else{
+                        @Html.DropDownList("checkList", DistrictCategory, new{id = "listbox", multiple="multiple"})
+
+                    }
+              } 
+
+            </li>                       
+        </ol>
+        <input type="submit" value="Save" />     
+        
+        
+    </fieldset>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#listbox").dropdownchecklist({ maxDropHeight: 130 });
+    });
+</script> 
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        
+        @RenderSection("scripts", required: false)
+@*        <script src="../Scripts/mainjs.js"></script>*@
+        <script src="@Url.Content("http://maps.googleapis.com/maps/api/js?v=3.10&sensor=false&libraries=places&language=en")" type="text/javascript"></script>
+    </head>
+	<script type="text/javascript" src="@Url.Content("https://www.google.com/jsapi?.js")"></script>
+    @Scripts.Render("~/Scripts/mainjs.js")
+    <body>
+
+        <script>
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+            <header >
+                <div style="width:100%; min-width: 800px; height:64px">
+                    <img style="float:left; margin-left:-5px; margin-right: auto; margin-top:10px;" src="~/Images/mark.png" />
+                     @if (@ViewBag.Title != "Log in" && @ViewBag.Title != "Register")
+                     {
+
+                        <ul id="menu">  
+                           <li >
+                                @Html.ActionLink("Log out", "Logout", "MyAccount")
+                            </li>
+                            @if (@ViewBag.ActivePage == "REPORTS") 
+                            {
+                                <li class="active" onmouseover="displaySubmenu()" onmouseout="hideSubmenu()">
+                                    <a>REPORTS</a>
+                                                                     
+                                    <ul class="reportMenu" id="reportMenu" style="display:none;">
+                                        <li class ="submenu" onclick="hideSubmenu()">@Html.ActionLink("Teams", "Teams", "Reports")</li>
+                                        <li class ="submenu" onclick="hideSubmenu()">@Html.ActionLink("Districts", "Districts", "Reports")</li>
+                                        <li class ="submenu" onclick="hideSubmenu()">@Html.ActionLink("Track Task", "TrackTask", "Reports")</li>
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li onmouseover="displaySubmenu()" onmouseout="hideSubmenu()">
+                                    <a>REPORTS</a>
+                                    <ul class="reportMenu" id="reportMenu" style="display:none;">
+                                        <li class ="submenu" onclick="hideSubmenu()">@Html.ActionLink("Teams", "Teams", "Reports")</li>
+                                        <li class ="submenu" onclick="hideSubmenu()">@Html.ActionLink("Districts", "Districts", "Reports")</li>
+                                        <li class ="submenu" onclick="hideSubmenu()">@Html.ActionLink("Track Task", "TrackTask", "Reports")</li>
+                                    </ul>
+                                </li>
+                            }
+
+                            @if (@ViewBag.ActivePage == "DASHBOARD")
+                            {
+                                <li class="active">@Html.ActionLink("DASHBOARD", "Index", "DashBoard")</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("DASHBOARD", "Index", "DashBoard")</li>
+                            }             
+
+                            @if (@ViewBag.ActivePage == "TASKS")
+                            {
+                                <li class="active">@Html.ActionLink("TASKS", "Index", "Tasks")</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("TASKS", "Index", "Tasks")</li>
+                            }
+
+                            @if (@ViewBag.ActivePage == "TEAMS")
+                            {
+                                <li class="active">@Html.ActionLink("TEAMS", "TeamIndex", "Teams")</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("TEAMS", "TeamIndex", "Teams")</li>
+                            }
+                            @if ((string)@Session["Role"] == "Administrator")
+                            {
+                                if (@ViewBag.ActivePage == "USERS")
+                                {
+                                    <li class="active">@Html.ActionLink("USERS", "Index", "Teams")</li>
+                                }
+                                else
+                                {
+                                    <li>@Html.ActionLink("USERS", "Index", "Teams")</li>
+                                }
+                            }
+
+                        </ul>
+                     }
+                </div>
+            </header>
+       
+        <div id="body">
+            
+            @RenderSection("featured", required: false)
+            <section id="heigtBody" class="content-wrapper main-content clear-fix" >
+                @RenderBody()
+            </section>
+        </div>
+        <footer >
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p style="text-align:center;color:white;">&copy; @DateTime.Now.Year CopyRight</p>
+                    @if (@ViewBag.Title != "Log in")
+                    {
+                        <button title="Back" style="float:left; background-color:transparent;margin-right:0px; color:white; border:none; margin-top:-25px;" onclick="backFunction()"><<</button>     
+                        <button title="Forward" style="float:right;background-color:transparent; margin-right:0px; color:white; border:none; margin-top:-25px;" onclick="forwardFunction()">>></button>            
+       
+                    }
+                </div>
+                
+            </div>
+        </footer>
+        <script>
+            function displaySubmenu() {
+                document.getElementById("reportMenu").style.display = 'block';
+            }
+
+            function hideSubmenu() {
+                document.getElementById("reportMenu").style.display = 'none';
+            }
+        </script>
+        <script>
+            window.onload = mainPageLoad();
+          </script>
+
+    </body>
+</html>

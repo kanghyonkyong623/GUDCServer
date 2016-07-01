@@ -1,0 +1,70 @@
+﻿@model GUDC.Models.TeamMemberEntry
+@{
+    ViewBag.Title = "TEAMS";
+}
+
+<h2>Edit Team Member</h2>
+
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>Edit TeamMember Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.TEAMCODE)
+                @{
+                    SelectList TeamCodes = (SelectList)ViewBag.TeamCodes;
+                    }
+                @Html.DropDownListFor(m => m.TEAMCODE, TeamCodes)
+            </li>
+         @*   <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword)
+            </li>*@
+@*            <li>
+                @Html.LabelFor(m => m.TEAMMEMBERCODE)
+                @Html.TextBoxFor(m => m.TEAMMEMBERCODE)
+            </li>*@
+            <li>
+                @Html.LabelFor(m => m.TEAMMEMBERNAME)
+                @Html.TextBoxFor(m => m.TEAMMEMBERNAME)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.TEAMMEMBERNO)
+                @Html.TextBoxFor(m => m.TEAMMEMBERNO)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.DESCRIPTION)
+                @Html.TextBoxFor(m => m.DESCRIPTION)
+            </li>
+            @*<li>
+                @Html.LabelFor(m => m.EMAIL)
+                @Html.TextBoxFor(m => m.EMAIL)
+            </li>*@
+            <li>
+                @Html.LabelFor(m => m.TEAMMEMBERROLE)
+                @{
+                    SelectList TeamMemberRole = (SelectList)ViewBag.TeamMemberRole;
+                    }
+                @Html.DropDownListFor(m => m.TEAMMEMBERROLE, TeamMemberRole)
+            </li>       
+            @*<li style="display:none">
+                @Html.LabelFor(m => m.SelectUserId)
+                @Html.TextBoxFor(m => m.SelectUserId)
+            </li>       *@            
+        </ol>
+            <input type="submit" value="Save" />       
+            
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

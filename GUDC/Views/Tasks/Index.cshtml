@@ -1,0 +1,119 @@
+﻿@model GUDC.Models.TaskEntry
+<script type="text/javascript" 
+src="@Url.Content(
+"~/Scripts/jquery.unobtrusive-ajax.min.js")"> 
+</script>
+
+@{
+    ViewBag.Title = "TASKS";
+    AjaxOptions options = new AjaxOptions
+    {
+        UpdateTargetId = "searchResultTask",
+        InsertionMode = InsertionMode.Replace,
+
+    };
+
+}
+
+
+@*<script>
+
+    function activeTaskDataView(trData) {
+        var tdCoor = trData.cells[7];
+        var locationData = tdCoor.innerHTML;
+
+        mapSetCenter(locationData);
+        //alert(taskDataList);
+    }
+
+</script>*@
+
+
+<h1>TASKS</h1>
+ <div id ="googleMap" style="margin:0 auto;border:solid;border-width:4px;border-color:#222222; height:350px; width:60%;">
+ </div>
+<div>
+    <h2 style="float:left; color:white; margin-bottom:-10px;">ACTIVE TASK</h2>
+    @using (Ajax.BeginForm("SearchTask", options))
+    {               
+        <div style="float:right; margin-top:20px;">                                     
+            <button type="submit" style="float:right; margin-right:0px; width:42px; height: 42px; margin-top:5px;background-attachment:local; border:none; background-image:url('Images/search.png');"></button>
+            <input style="float:right; width:300px; height:40px; " type="text" name="keyword" />                   
+        </div>
+    }                  
+</div>
+<table id="tasksTable">
+    <tr>
+        <th>TASK ID</th>
+        <th>STATUS</th>
+        <th>START</th>
+        <th>END</th>
+        <th>LOCATION</th>
+        <th>TEAM NAME</th>
+        <th>DETAILS</th>
+        <th>EDIT/DELETE</th>
+    </tr>
+    <tbody id="searchResultTask">
+        @Html.Action("SearchTask", new { keyword = "" })
+    </tbody>
+    
+</table>
+<script>
+    $(document).ajaxComplete(function () {
+        if (document.getElementById("tasksTable") != null) {
+            initTasks();
+        }
+    });
+
+</script>
+@*<script>
+    //function goTeam(tdTeam) {
+    //    ////trData.style.backgroundColor = "rgb(24,24,24)";
+    //    var value = tdTeam.innerHTML;
+    //    //var value = taskDataList.innerText;
+    //    window.location.assign("Teams/AddEditTeam/" + value);
+    //}
+    //function initTasks() {
+    //    setMapOnAll(null);
+    //    var rows = document.getElementById("tasksTable").rows;
+    //    for (var i = 1, ceiling = rows.length; i < ceiling; i++) {
+    //        var loc = rows[i].cells[7].innerHTML;
+    //        var status = rows[i].cells[1].innerHTML;
+    //        tasksMarkers.push(placeMarker(loc, status));
+    //    }
+    //    var bounds = new google.maps.LatLngBounds();
+    //    for (i = 0; i < tasksMarkers.length; i++) {
+    //        bounds.extend(tasksMarkers[i].getPosition());
+    //    }
+    //    if (tasksMarkers.length == 1) {
+    //        google.maps.event.addListenerOnce(map, 'bounds_changed', function (event) {
+    //            map.setZoom(map.getZoom() - 1);
+
+    //            if (this.getZoom() > 15) {
+    //                this.setZoom(15);
+    //            }
+    //        });
+    //    }
+    //    map.setCenter(bounds.getCenter());
+    //    map.fitBounds(bounds);
+    //}
+
+    //function setMapOnAll(map) {
+    //    for (var i = 0; i < tasksMarkers.length; i++) {
+    //        tasksMarkers[i].setMap(map);
+    //    }
+    //    tasksMarkers = [];
+    //}
+
+</script>*@
+ <div style="float:right;margin-top:5px;" class="button">@Html.ActionLink("Add New Task", "AddNewTask", "Tasks")</div>
+
+<br />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+

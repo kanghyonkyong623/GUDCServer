@@ -1,0 +1,85 @@
+﻿@model GUDC.Models.RegisterModel
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword)
+            </li>
+            <li style="display:none;">
+                @Html.LabelFor(m => m.TEAMCODE)
+                @Html.TextBoxFor(m => m.TEAMCODE)
+            </li>
+@*            <li>
+                @Html.LabelFor(m => m.ROAL)
+                @Html.TextBoxFor(m => m.ROAL)
+            </li>*@
+            <li>
+                @Html.LabelFor(m => m.NAME)
+                @Html.TextBoxFor(m => m.NAME)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.PHONE)
+                @Html.TextBoxFor(m => m.PHONE)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.EMAIL)
+                @Html.TextBoxFor(m => m.EMAIL)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Role)
+                @{
+                    SelectList UserRoles =  (SelectList) ViewBag.UserRoles;
+                    }
+                @Html.DropDownListFor(m => m.Role, UserRoles, new { id="cmbUserRole", onchange="showCmbTeam()"})
+            </li>       
+            <li style="display:none">
+                @Html.LabelFor(m => m.SelectUserId)
+                @Html.TextBoxFor(m => m.SelectUserId)
+            </li>
+
+            <li style="display:none" id="li_Teams">
+                @Html.LabelFor(m=>m.Team)
+                @{
+                    SelectList Teams =  (SelectList) ViewBag.Teams;
+                    }
+                @Html.DropDownListFor(m => m.Team, Teams, new { id="cmbTeams"})
+
+            </li>                   
+        </ol>
+        @{
+            if(ViewBag.Title == "Add User")
+            {
+                <input type="submit" value="Add" />       
+            }
+            else
+            {
+                <input type="submit" value="Save" />
+            }
+        }
+        
+    </fieldset>
+    <script>
+        if ($("#cmbUserRole").val() != "Administrator") {
+            $("#li_Teams").show();
+        }
+    </script>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

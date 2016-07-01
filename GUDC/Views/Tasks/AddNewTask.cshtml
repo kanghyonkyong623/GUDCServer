@@ -1,0 +1,152 @@
+﻿@model GUDC.Models.TaskEntry
+@*@{
+    ViewBag.Title = "AddNewTask";
+}*@
+
+@{
+    if (ViewBag.Title == "Edit Task")
+    {
+        <h2>Edit Task</h2>       
+    }
+    else
+    {
+        <h2>Add New Task</h2>
+    }
+}
+@Styles.Render("~/Content/jquery.datetimepicker.css")
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.js")"> 
+</script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.datetimepicker.full.js")"> 
+</script>
+    <div id ="leftPannel" style="float:left; width:300px;">
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <fieldset>
+                <legend>Add Task Form</legend>
+                <ol>
+                   <li style="display:none">
+                        @Html.LabelFor(m => m.id)
+                        @Html.TextBoxFor(m => m.id, new { id="taskId"})
+                    </li>
+
+                    <li>
+                        @Html.LabelFor(m => m.TASK)
+                        @Html.TextBoxFor(m => m.TASK, new { id="task"})
+                    </li>
+                     <li>
+                        @Html.LabelFor(m => m.DETAILS)
+                        @Html.TextBoxFor(m => m.DETAILS, new { id="taskDeatail"})
+                    </li>
+
+                    <li>
+                        @Html.LabelFor(m => m.STATUS)
+                         @{
+                                SelectList TaskStatus = (SelectList)ViewBag.TaskStatus;
+                            }
+                        @Html.DropDownListFor(m => m.STATUS, TaskStatus, new { id="taskStatus"})
+                        
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.START)
+                        @{
+                            if (ViewBag.Title == "Edit Task")
+                            {
+                                     @Html.TextBoxFor(m => m.START, new { id="taskStart"})
+                            }
+                                                        else
+                            {
+                                @*<input value="@ViewBag.CurrentDate" id="taskStart"/>*@
+                                @Html.TextBoxFor(m => m.START, new { id="taskStart", Value=@ViewBag.CurrentDate})
+
+                            }
+
+                        }
+                    </li>
+                    @{
+                            if (ViewBag.Title == "Edit Task")
+                            {
+                                <li style="display:none;">
+                                    @Html.LabelFor(m => m.END)
+                                    @Html.TextBoxFor(m => m.END, new { id="taskEnd"})
+                                </li>
+                            }
+                       }
+                    <li>
+                        @Html.LabelFor(m => m.LOCATION)
+                        @Html.TextBoxFor(m => m.LOCATION, new { id="taskLocation", value="32,32"})
+                    </li>
+                    <li style="display:none;">
+                        @Html.LabelFor(m => m.COORDINATE)
+                        @Html.TextBoxFor(m => m.COORDINATE, new { id="taskCoordinate", value="32,32"})
+                    </li>
+
+                    <li>
+                        @Html.LabelFor(m => m.TEAMNAME)
+                        @{
+                            SelectList TeamCodes = (SelectList)ViewBag.TeamCodes;
+                            }
+                        @Html.DropDownListFor(m => m.TEAMNAME, TeamCodes, new { id="taskTeamname", onchange="displayTeam(this)"})
+                    </li>
+                    <li >
+                        @Html.LabelFor(m => m.DIGLEN)
+                        @Html.TextBoxFor(m => m.DIGLEN, new { id="taskDiglen"})
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.CLIENTNAME)
+                        @Html.TextBoxFor(m => m.CLIENTNAME, new { id="taskClient"})
+                    </li>
+                    <li style="display:none">
+                        @Html.TextBoxFor(m => m.route, new { id="route"})
+                    </li>
+
+                </ol>
+
+                <input type="submit" value="Submit" />
+            </fieldset>
+        }
+    </div>
+<div id="rightPannel" style="margin-left:5px;min-width:495px;display:inline-block;float:right;width:61.5%">
+    <h2 style="float:left;color:white;margin-top:25px;">LOCATE TASK</h2>
+    <div style="float:right; margin-top:20px;">
+        @{
+            if (ViewBag.Title == "Edit Task")
+            {
+                 <img id="searchsubmit" style="float:right; width:42px; height: 42px; margin-top:5px;" src="../../Images/search.png" />
+            }
+            else
+            {
+                <img id="searchsubmit" style="float:right; width:42px; height: 42px; margin-top:5px;" src="../Images/search.png" />
+            }
+        }
+
+        <input id="txtPlaces" style="float:right; width:250px; height:40px; " type="text" name="SEARCH"/>            
+    </div>
+    <br />
+    <div id ="googleMap" style="margin-top:100px;border:solid;border-width:4px;border-color:#222222; height:500px;">
+        
+    </div>
+
+</div>
+<script language="javascript">
+    $(document).ready(function () {
+        $('#taskStart').datetimepicker({ theme: 'dark' });
+        if (document.getElementById("taskEnd") != null)
+        {
+            $('#taskEnd').datetimepicker({ theme: 'dark' });
+        }
+    });
+
+</script>
+@{
+    if (ViewBag.Title != "Edit Task")
+    {
+        <script language="javascript">
+            document.getElementById("taskTeamname").selectedIndex = -1;
+        </script>       
+    
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

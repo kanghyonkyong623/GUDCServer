@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "TEAMS";
+}
+
+<div>
+    <h2 style="float:left; font-size:30px;">TEAMS</h2>
+    <div style="float:right; margin-top:20px;">
+        <img style="float:right; width:42px; height: 42px; margin-top:5px;" src="~/Images/search.png" />
+        <input style="float:right; width:300px; height:40px; " type="text" name="SEARCH" />            
+    </div>
+</div>
+<table>
+    <tr>
+        <th>TEAM CODE</th>
+        <th>TEAM NAME</th>
+        <th>DISTRICT</th>
+        <th>TEAM MEMBER</th>
+        <th>EDIT/DELETE</th>
+    </tr>
+    @{bool lineflag = true;
+      }  
+    @foreach (var teamMember in ViewBag.TeamMemberEntries)
+    {
+        if (lineflag)
+        {   
+            <tr class ="odd">
+                <td>
+                    @teamMember.TEAMCODE
+                </td>
+                <td>
+                    @teamMember.TEAMNAME
+                </td>
+                <td>
+                    @teamMember.DISTRICT
+                </td>
+                <td>
+                    @teamMember.TEAMMEMBER
+                </td>
+                <td>
+                    <div>
+                        <div class="button">@Html.ActionLink("Edit", "TeamMemberEdit", new { id=@teamMember.id})</div>
+
+                        <div class="redbutton">@Html.ActionLink("Delete", "TeamMemberDelete", new { id=@teamMember.id})</div>
+                    </div>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr class ="even">
+                <td>
+                    @teamMember.TEAMCODE
+                </td>
+                <td>
+                    @teamMember.TEAMNAME
+                </td>
+                <td>
+                    @teamMember.DISTRICT
+                </td>
+                <td>
+                    @teamMember.TEAMMEMBER
+                </td>
+                <td>
+                    <div>
+                        <div class="button">@Html.ActionLink("Edit", "TeamMemberEdit", new { id=@teamMember.id})</div>
+
+                        <div class="redbutton">@Html.ActionLink("Delete", "TeamMemberDelete", new { id=@teamMember.id})</div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+        lineflag = !lineflag;
+         
+    }
+</table>
+
+<br />
+
+<div style="float:right" class="button">@Html.ActionLink("Add / Edit Team Members", "AddEditTeamMembers")</div>
+<br />

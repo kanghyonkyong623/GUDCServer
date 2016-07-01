@@ -1,0 +1,123 @@
+﻿
+@model GUDC.Models.TeamItem
+
+@{
+    ViewBag.Title = "Add Edit Team";
+    AjaxOptions options = new AjaxOptions
+    {
+        UpdateTargetId = "searchResult1",
+        InsertionMode = InsertionMode.Replace,
+
+    };
+}
+@Styles.Render("~/Content/ui.dropdownchecklist.css")
+@*<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"> 
+</script>*@
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery_1.2.6.js")"> 
+</script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/ui.core.js")"> 
+</script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/ui.dropdownchecklist.js")"> 
+</script>
+
+<h2>ADD NEW TEAM</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    
+    <table style ="width:100%;">
+        @*<tr>
+            <td class="mem">TEAM CODE</td>
+            
+        </tr>
+        <tr>
+            <td class="mem">
+                @Html.TextBoxFor(m => m.TEAMCODE)
+                @Html.ValidationMessageFor(m => m.TEAMCODE)
+            </td>
+            
+        </tr>*@
+
+        <tr>
+            <td class="mem">TEAM NAME</td>
+            
+        </tr>
+        <tr>
+            <td class="mem">
+                @Html.TextBoxFor(m => m.TEAMNAME)
+                @Html.ValidationMessageFor(m => m.TEAMNAME)
+            </td>
+            
+        </tr>
+        <tr>
+            <td class="mem">DISTRICT</td>              
+        </tr>
+        <tr>
+            <td class="mem" style="display:none;">
+                @Html.TextBoxFor(m => m.DISTRICT, new {id = "district" })
+            </td>
+
+        
+            <td class="mem">
+                @{
+                    SelectList DistrictCategory = (SelectList)ViewBag.DistrictCategory;
+                    }
+                @Html.DropDownList("checkList", DistrictCategory, new{id = "listbox", multiple="multiple"})
+
+            </td>     
+        </tr>
+</table>
+
+<input style="float:right; margin-right: 0px;" type="submit" value="Add Team" />
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#listbox").dropdownchecklist({ maxDropHeight: 130 });
+    });
+</script> 
+<br />
+<br />
+<br />
+<div style="border:1px solid; border-color:rgb(90,97,107);"></div>
+
+<div>
+    <h2 style="float:left; margin-bottom:-10px;">EDIT TEAM</h2>
+    @using (Ajax.BeginForm("SearchTeam", options))
+    {               
+        <div style="float:right; margin-top:20px;">                                     
+            <button type="submit" style="float:right; margin-right:0px; width:42px; height: 42px; margin-top:5px;background-attachment:local; border:none; background-image:url('../Images/search.png');"></button>
+            <input style="float:right; width:300px; height:40px; " type="text" name="keyword" />                   
+        </div>
+    }                  
+</div>
+<table>
+    <tr>
+        <th>TEAM CODE</th>
+        <th>TEAM NAME</th>
+        <th>DISTRICT</th>
+        <th>TEAM MEMBER</th>
+        <th>TEAM STATUS</th>
+        <th>EDIT/DELETE</th>
+    </tr>
+    <tbody id="searchResult1">
+        @Html.Action("SearchTeam", new { keyword = "" })
+    </tbody>
+    
+</table>
+<script>
+    function activeTaskDataView(trData) {
+        ////trData.style.backgroundColor = "rgb(24,24,24)";
+        var taskDataList = trData.cells[0];
+        var value = taskDataList.innerText;
+        window.location.assign("AddEditTeamMembers/" + value);        
+    }
+</script>
+ <div style="float:right;margin-top:5px;" class="button">@Html.ActionLink("Add Team Members", "AddEditTeamMembers", "Teams")</div>
+
+<br />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Reports";
+}
+@*@Styles.Render("~/Content/jquery.datetimepicker.css")*@
+<script type="text/javascript" src="@Url.Content("~/Scripts/amcharts.js")"> 
+</script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/serial.js")"> 
+</script>
+
+<h2>REPORTS</h2>
+<br />
+
+<div>
+    <div id ="leftPannel" style="float:left;width:300px; color:white;">
+        TEAM NAME<br />
+        @{
+            SelectList TeamNames = (SelectList)ViewBag.TeamNames;
+         }
+        @Html.DropDownList("TASKNAME",TeamNames, new { id="teamName", onchange="drawTable()"})
+
+        TASK STATUS<br />
+       @{
+           SelectList TaskStatus = (SelectList)ViewBag.TaskStatus;
+         }
+        @Html.DropDownList("TASKSTATUS",TaskStatus, new { id="taskStatus", onchange="drawTable()"})
+
+        DISTRICT<br />
+
+        @{
+            SelectList DistrictList = (SelectList)ViewBag.DistrictList;
+         }
+        @Html.DropDownList("DISTRICTS",DistrictList, new { id="DistrictLists", onchange="drawTable()"})
+
+        <div style="float:left;">
+            START<br />
+            @{
+                SelectList StartDates = (SelectList)ViewBag.StartDates;
+             }
+            @Html.DropDownList("start",StartDates, new { id="Start", onchange="drawTable()"})
+            @*@Html.TextBox("start","All", new { id="taskStart"})*@
+        </div>
+        <div style="float:right;">
+            END<br />
+             @{
+                 SelectList EndDates = (SelectList)ViewBag.EndDates;
+             }
+            @Html.DropDownList("end", EndDates, new { id="End", onchange="drawTable()"})
+           @*@Html.TextBox("end","All", new { id="taskEnd"})*@
+
+        </div>
+        <br /><br /><br /><br />
+        <h3 id="tableTitle" style="float:left;color:white;">GROUPED BY Team Name </h3>
+        @*<p style="float:right; margin-top:30px; margin-right:15px;">GROUPED BY Team Name</p>*@
+    </div>
+    <div id ="chartdiv" style="background-color:white; float:right;border-radius:3px; border:4px solid #222222;min-width:480px;height:350px;margin-left:5px; width:60%;">
+        
+    </div>
+</div>
+
+<table >
+    <tr>
+        <th>TASK</th>
+        <th>STATUS</th>
+        <th>START</th>
+        <th>END</th>
+        <th>LOCATION</th>
+        <th>DISTRICT</th>
+    </tr>
+    <tbody id="taskBodyTable"></tbody>
+
+</table>
+
+<br />
+<script language="javascript">
+    $(document).ready(function () {
+        //$('#taskStart').datetimepicker({ theme: 'dark' })
+        //$('#taskEnd').datetimepicker({ theme: 'dark' })
+        $('#DistrictLists').prepend("<option selected =\"selected\">All<option>");
+        var tag = document.getElementById("DistrictLists");
+        tag.children[1].style.display = "none";
+        drawTable();
+    });
+    
+</script>

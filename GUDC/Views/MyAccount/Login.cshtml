@@ -1,0 +1,79 @@
+﻿@model GUDC.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+    
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<section id="loginForm" style="margin-top:100px; max-width: 100%;">
+<h2>Use a local account to log in.</h2>
+@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset style="width:250px;">
+        <legend>Log in Form</legend>
+        <ol>
+        @{
+           var userInCookie = Request.Cookies["user"];
+        }
+
+        @if (userInCookie != null && userInCookie.Value != "")
+        {
+            var userValues = Newtonsoft.Json.JsonConvert.DeserializeObject<GUDC.Models.LoginModel>(userInCookie.Value);
+             <li>
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName, new { Value = @userValues.UserName })
+                @Html.ValidationMessageFor(m => m.UserName)
+            </li>
+            <br />
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { Value = @userValues.Password })
+                @Html.ValidationMessageFor(m => m.Password)
+            </li>
+            <br />
+            <li>
+                @Html.CheckBox("RememberMe", true)
+                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+            </li>
+        }
+        else
+        {
+            <li>
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            </li>
+            <br />
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </li>
+            <br />
+            <li>
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+            </li>
+        }
+        </ol>                                                                                                                              
+        <br />
+                <input type="submit" value="Log in" />
+                @*<div style="float:right;margin-top:5px;" class="button">@Html.ActionLink("Register", "Register")</div>*@            
+        
+
+        @*<input type="submit" value="Log in" />*@
+    </fieldset>
+    
+}
+</section>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,70 @@
+﻿@using GUDC.Models
+@model IEnumerable<TaskEntry>
+
+
+
+
+@{bool lineflag = true;
+      }  
+@foreach (TaskEntry p in Model)
+{
+    if (lineflag)
+        {   
+            <tr class ="odd" ondblclick ="activeTaskDataView(this)">
+                <td>@p.id</td>
+                <td>@p.STATUS</td>
+                <td>@p.START</td>
+                @if (p.STATUS == "Closed")
+                {
+                    <td>@p.END</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td>@p.LOCATION</td>
+                <td onclick="goTeam(this)">@p.TEAMNAME</td>
+                <td>@p.DETAILS</td>
+                <td style="display:none;">@p.COORDINATE</td>
+                <td>
+                    <div>
+                        <div class="button">@Html.ActionLink("Edit", "EditTask", new { id=@p.id})</div>
+
+                        <div class="redbutton">@Html.ActionLink("Delete", "DeleteTask", new { id=@p.id})</div>
+                    </div>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr class ="even" ondblclick ="activeTaskDataView(this)">
+                <td>@p.id</td>
+                <td>@p.STATUS</td>
+                <td>@p.START</td>
+                @if (p.STATUS == "Closed")
+                {
+                    <td>@p.END</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td onclick="goTeam(this)">@p.LOCATION</td>
+                <td>@p.TEAMNAME</td>
+                <td>@p.DETAILS</td>
+                <td style="display:none;">@p.COORDINATE</td>
+
+                <td>
+                    <div>
+                        <div class="button">@Html.ActionLink("Edit", "EditTask", new { id=@p.id})</div>
+
+                        <div class="redbutton">@Html.ActionLink("Delete", "DeleteTask", new { id=@p.id})</div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+        lineflag = !lineflag;
+}
+
+

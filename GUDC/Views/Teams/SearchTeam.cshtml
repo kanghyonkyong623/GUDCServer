@@ -1,0 +1,71 @@
+﻿@using GUDC.Models
+@model IEnumerable<TeamItem>
+
+
+
+
+@{bool lineflag = true;
+      }  
+@foreach (TeamItem p in Model)
+{
+    if (lineflag)
+        {   
+            <tr class ="odd" ondblclick ="activeTaskDataView(this)" >
+                <td>
+                    @p.id
+                </td>
+                <td>
+                    @p.TEAMNAME
+                </td>
+                <td>
+                    @p.DISTRICT
+                </td>
+                <td>
+                     @p.MEMBERCOUNT
+                </td>
+                <td>
+                     @p.TEAMSTATUS
+                </td>
+
+                <td>
+                    <div>
+                        <div class="button">@Html.ActionLink("Edit", "TeamItemEdit", new { id=@p.id})</div>
+
+                        <div class="redbutton">@Html.ActionLink("Delete", "TeamItemDelete", new { id=@p.id})</div>
+                    </div>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr class ="even" ondblclick ="activeTaskDataView(this)">
+                <td>
+                    @p.id
+                </td>
+                <td>
+                    @p.TEAMNAME
+                </td>
+                <td>
+                    @p.DISTRICT
+                </td>
+                <td>
+                    @p.MEMBERCOUNT
+                </td>
+                <td>
+                     @p.TEAMSTATUS
+                </td>
+
+                <td>
+                    <div>
+                        <div class="button">@Html.ActionLink("Edit", "TeamItemEdit", new { id=@p.id})</div>
+
+                        <div class="redbutton">@Html.ActionLink("Delete", "TeamItemDelete", new { id=@p.id})</div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+        lineflag = !lineflag;
+}
+
+

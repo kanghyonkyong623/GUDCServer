@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "ADD/EDIT USER";
+    AjaxOptions options = new AjaxOptions
+    {
+        UpdateTargetId = "searchResult",
+        InsertionMode = InsertionMode.Replace,
+        
+    };
+}
+
+<script type="text/javascript" 
+src="@Url.Content( 
+"~/Scripts/jquery.unobtrusive-ajax.min.js")"> 
+</script>
+
+<div>
+    <h2 style="float:left; font-size:30px;">ADD/EDIT USER</h2>
+    
+        @using (Ajax.BeginForm("SearchMember", options))
+            {               
+                <div style="float:right; margin-top:20px;">                                     
+                    <button type="submit" style="float:right; margin-right:0px; width:42px; height: 42px; margin-top:5px;background-attachment:local; border:none; background-image:url('Images/search.png');"></button>
+                    <input style="float:right; width:300px; height:40px; " type="text" name="keyword" />                   
+                </div>
+            }                   
+    
+</div>
+<div id="privacy">
+<table>
+    <tr>
+       @* @if (@ViewBag.SessionRole != "Administrator")
+        {
+            *@
+        <th style="display:none;">TEAM CODE</th>
+        @*}*@
+        <th>USE NAME</th>
+        <th>NAME</th>
+        <th>ROLE</th>
+        <th>PHONE</th>
+        <th>E-MAIL</th>
+        <th>EDIT/DELETE</th>
+    </tr>
+    <tbody id="searchResult">
+        @Html.Action("SearchMember", new { keyword = "" })
+    </tbody>
+   
+</table>
+</div>
+<br />
+
+<div style="float:right" class="button">@Html.ActionLink("Add New User", "Add")</div>
+<br />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

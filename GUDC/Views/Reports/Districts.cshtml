@@ -1,0 +1,165 @@
+﻿@{
+    ViewBag.Title = "Reports";
+}
+
+
+
+<h2>REPORTS</h2>
+<br />
+
+<div>
+    <div id ="leftPannel" style="float:left;width:300px; color:white;">
+
+        DISTRICT<br />
+
+        @{
+            SelectList DistrictList = (SelectList)ViewBag.DistrictList;
+         }
+        @Html.DropDownList("DISTRICTS",DistrictList, new { id="DistrictLists", onchange="drawChartGoogle()"})
+        <br /><br />
+        @*<div>*@
+            START<br />
+            @{
+                SelectList StartDates = (SelectList)ViewBag.StartDates;
+             }
+            @Html.DropDownList("start",StartDates, new { id="Start", onchange="drawChartGoogle()"})
+            @*@Html.TextBox("start","All", new { id="taskStart"})*@
+        @*</div>*@
+        <br /><br />
+        @*<div>*@
+            END<br />
+             @{
+                 SelectList EndDates = (SelectList)ViewBag.EndDates;
+             }
+            @Html.DropDownList("end", EndDates, new { id="End", onchange="drawChartGoogle()"})
+           @*@Html.TextBox("end","All", new { id="taskEnd"})*@
+
+        @*</div>*@
+       
+@*        <h2 style="float:left;color:white; margin-top:90px;">AGUOZA</h2>
+        <p style="float:right; margin-top:100px; margin-right:15px;">Group By District</p>*@
+    </div>
+    <div id ="map_canvas" style="float:right;border-radius:3px; border:4px solid #222222;min-width:480px;height:350px;margin-left:5px; width:60%;">
+        
+    </div>
+</div>
+
+<table id="districtReTbl">
+    <tr>
+        <th>TASK</th>
+        <th>STATUS</th>
+        <th>START</th>
+        <th>END</th>
+        <th>LOCATION</th>
+        <th>DISTRICT</th>
+    </tr>
+    <tbody id="taskBodyTable"></tbody>
+
+</table>
+
+<br />
+<script>
+
+    var mapdiv = null;
+    google.load('visualization', '1', { packages: ['corechart'] });
+
+    function drawChart(marker, data) {
+
+
+        var options = {
+            'title': 'Perception Analysis ' +
+                    marker.getPosition().toString(),
+            'width': 300,
+            'height': 150
+        };
+
+        var node = document.createElement('div'),
+                infoWindow = new google.maps.InfoWindow(),
+                chart = new google.visualization.PieChart(node);
+
+        chart.draw(data, options);
+        infoWindow.setContent(node);
+        infoWindow.open(marker.getMap(), marker);
+    }
+
+    function ChartMarker(options) {
+        this.setValues(options);
+
+        this.$inner = $('<div>').css({
+            position: 'relative',
+            left: '-50%', top: '-50%',
+            width: options.width,
+            height: options.height,
+            fontSize: '1px',
+            lineHeight: '1px',
+            padding: '2px',
+            backgroundColor: 'white',
+            cursor: 'default'
+        });
+
+        this.$div = $('<div>')
+                .append(this.$inner)
+                .css({
+                    position: 'absolute',
+                    display: 'none'
+                });
+    };
+
+    ChartMarker.prototype = new google.maps.OverlayView;
+
+    ChartMarker.prototype.onAdd = function () {
+        $(this.getPanes().overlayMouseTarget).append(this.$div);
+    };
+
+    ChartMarker.prototype.onRemove = function () {
+        this.$div.remove();
+    };
+
+    ChartMarker.prototype.draw = function () {
+        var marker = this;
+        var projection = this.getProjection();
+        var position = projection.fromLatLngToDivPixel(this.get('position'));
+
+        this.$div.css({
+            left: position.x,
+            top: position.y,
+            display: 'block'
+        })
+
+        this.$inner
+                .html('<img src="' + this.get('image') + '"/>')
+                .click(function (event) {
+                    var events = marker.get('events');
+                    events && events.click(event);
+                });
+
+        this.chart = new google.visualization.PieChart(this.$inner[0]);
+        this.chart.draw(this.get('chartData'), this.get('chartOptions'));
+    };
+
+    $(document).ready(function () {
+        $('#DistrictLists').prepend("<option selected =\"selected\">All<option>");
+        var tag = document.getElementById("DistrictLists");
+        tag.children[1].style.display = "none";
+        var latLng = new google.maps.LatLng(30.0333, 31.2167);
+        var mapOptions = {
+            center: latLng,
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        mapdiv = new google.maps.Map(document.getElementById("map_canvas"),
+                mapOptions);
+        drawDistrictTable(mapdiv);
+
+    });
+    function drawChartGoogle() {
+        drawDistrictTable(mapdiv)
+    }
+</script>
+
+
+
+
+
+   

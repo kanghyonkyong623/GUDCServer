@@ -1,0 +1,100 @@
+﻿@using GUDC.Models
+@model IEnumerable<TrackInfoTable>
+
+
+@{
+    ViewBag.Title = "Reports";
+}
+
+<h2>REPORTS</h2>
+<br />
+
+<div>
+    <div id ="leftPannel" style="float:left;width:300px; height:370px; color:white;">
+
+        TASK<br />
+
+        @{
+            SelectList TaskList = (SelectList)ViewBag.TaskList;
+         }
+        @Html.DropDownList("Tasks", TaskList, new { id="TaskList", onchange="drawTaskTack()"})
+        <br /><br />
+            DATE<br />
+            @{
+                SelectList Dates = (SelectList)ViewBag.Dates;
+             }
+            @Html.DropDownList("start",Dates, new { id="DateList", onchange="drawDateTaskTack()"})
+        <br />
+    </div>
+        <div id ="googleMap" style="float:right; border-radius:3px; border:4px solid #222222;min-width:380px;height:350px;margin-left:5px; width:60%;">
+        
+        </div>
+    
+</div>
+
+<table id="trackTaskInfoTable" >
+    <tr>
+        <th>ID</th>
+        <th>TASK</th>
+        <th>DATE</th>
+        <th>TEAM</th>
+        <th>DELETE</th>
+    </tr>
+@{bool lineflag = true;
+    }  
+@foreach (TrackInfoTable p in ViewBag.TrackInfos)
+{
+    if (lineflag)
+        {   
+            <tr style="cursor:pointer" class ="odd" onclick ="activeTrackTask(this)" >
+                <td>
+                    @p.id
+                </td>
+                <td>
+                    @p.taskName
+                </td>
+                <td>
+                    @p.date
+                </td>
+                <td>
+                     @p.teamName
+                </td>
+
+                <td>
+                  <div class="redbutton1">@Html.ActionLink("Delete", "Delete", new { id=@p.id})</div>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr style="cursor:pointer" class ="even" onclick ="activeTrackTask(this)">
+                <td>
+                    @p.id
+                </td>
+                <td>
+                    @p.taskName
+                </td>
+                <td>
+                    @p.date
+                </td>
+                <td>
+                     @p.teamName
+                </td>
+
+                <td>
+                  <div class="redbutton1">@Html.ActionLink("Delete", "Delete", new { id=@p.id})</div>
+                </td>
+            </tr>
+        }
+
+        lineflag = !lineflag;
+}
+</table>
+<br />
+@*        <input style="float:right; margin-right: 0px;" type="submit" onclick="deleteTracks()" value="DELET TRACK" />*@
+
+
+<script language="javascript">
+    document.getElementById("TaskList").selectedIndex = -1;
+    document.getElementById("DateList").selectedIndex = -1;
+</script> 
